@@ -1,0 +1,33 @@
+spring:
+    application:
+        name: agendafacil-api
+
+    datasource:
+        url: jdbc:postgresql://localhost:5432/agendafacil
+        username: seu_usuario
+        password: sua_senha
+
+    jpa:
+        hibernate:
+            ddl-auto: validate
+        show-sql: true
+        properties:
+            hibernate:
+                format_sql: true
+
+    flyway:
+        enabled: true
+        locations: classpath:db/migration
+        baseline-on-migrate: true
+
+    data:
+        redis:
+            host: localhost
+            port: 6379
+
+jwt:
+    secret: sua_chave_secreta_minimo_256_bits
+    expiration: 86400000
+
+server:
+    port: 8080
