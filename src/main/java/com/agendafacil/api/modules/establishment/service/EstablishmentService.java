@@ -19,17 +19,17 @@ public class EstablishmentService {
     public EstablishmentResponseDTO create(CreateEstablishmentDTO createEstablishmentDTO) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Establishment establishment = Establishment.builder()
-                .owner(user)
-                .name(createEstablishmentDTO.getName())
-                .category(createEstablishmentDTO.getCategory())
-                .phone(createEstablishmentDTO.getPhone())
-                .cep(createEstablishmentDTO.getCep())
-                .address(createEstablishmentDTO.getAddress())
-                .number(createEstablishmentDTO.getNumber())
-                .neighborhood(createEstablishmentDTO.getNeighborhood())
-                .city(createEstablishmentDTO.getCity())
-                .state(createEstablishmentDTO.getState())
-                .build();
+            .owner(user)
+            .name(createEstablishmentDTO.getName())
+            .category(createEstablishmentDTO.getCategory())
+            .phone(createEstablishmentDTO.getPhone())
+            .cep(createEstablishmentDTO.getCep())
+            .address(createEstablishmentDTO.getAddress())
+            .number(createEstablishmentDTO.getNumber())
+            .neighborhood(createEstablishmentDTO.getNeighborhood())
+            .city(createEstablishmentDTO.getCity())
+            .state(createEstablishmentDTO.getState())
+            .build();
 
         Establishment saved = establishmentRepository.save(establishment);
         return new EstablishmentResponseDTO(
@@ -53,21 +53,21 @@ public class EstablishmentService {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Establishment> establishments = establishmentRepository.findByOwner(user);
         return establishments.stream().map(
-                establishment -> new EstablishmentResponseDTO(
-                        establishment.getId(),
-                        establishment.getName(),
-                        establishment.getCategory(),
-                        establishment.getPhone(),
-                        establishment.getCep(),
-                        establishment.getAddress(),
-                        establishment.getNumber(),
-                        establishment.getNeighborhood(),
-                        establishment.getCity(),
-                        establishment.getState(),
-                        establishment.getActive(),
-                        establishment.getCreatedAt(),
-                        establishment.getUpdatedAt()
-                )
+            establishment -> new EstablishmentResponseDTO(
+                establishment.getId(),
+                establishment.getName(),
+                establishment.getCategory(),
+                establishment.getPhone(),
+                establishment.getCep(),
+                establishment.getAddress(),
+                establishment.getNumber(),
+                establishment.getNeighborhood(),
+                establishment.getCity(),
+                establishment.getState(),
+                establishment.getActive(),
+                establishment.getCreatedAt(),
+                establishment.getUpdatedAt()
+            )
         ).toList();
     }
 

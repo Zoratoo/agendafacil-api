@@ -53,3 +53,9 @@ docker compose up -d postgres redis
 | POST | `/professionals` | Criar profissional | OWNER |
 | GET | `/professionals/establishment/{id}` | Listar profissionais do estabelecimento | OWNER |
 | POST | `/professionals/{id}/establishment/{id}` | Vincular profissional a estabelecimento | OWNER |
+
+### Services Offered
+| Método | Rota | Descrição | Auth |
+|--------|------|-----------|------|
+| POST | `/services-offered` | Criar serviço | OWNER |
+| GET | `/services-offered/establishments/{id}` | Listar serviços do estabelecimento | Todos |

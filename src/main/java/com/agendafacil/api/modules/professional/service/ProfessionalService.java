@@ -12,7 +12,9 @@ import com.agendafacil.api.shared.dto.EstablishmentSummaryDTO;
 import com.agendafacil.api.shared.dto.UserSummaryDTO;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +29,20 @@ public class ProfessionalService {
 
     public ProfessionalResponseDTO create(CreateProfessionalDTO createProfessionalDTO) {
         User user = userRepository.findById(createProfessionalDTO.getUserId())
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "User not found with id: " + createProfessionalDTO.getUserId()
-                ));
+            .orElseThrow(() -> new EntityNotFoundException(
+                    "User not found with id: " + createProfessionalDTO.getUserId()
+            ));
+
         Establishment establishment = establishmentRepository.findById(createProfessionalDTO.getEstablishmentId())
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Establishment not found with id: " + createProfessionalDTO.getEstablishmentId()
-                ));
+            .orElseThrow(() -> new EntityNotFoundException(
+                    "Establishment not found with id: " + createProfessionalDTO.getEstablishmentId()
+            ));
+
+        User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!establishment.getOwner().getId().equals(authenticatedUser.getId())) {
+            throw new AccessDeniedException("You don't have permission to create a professional for this establishment");
+        }
+
         List<Establishment> establishments = new ArrayList<>();
         establishments.add(establishment);
         Professional professional = Professional.builder()
@@ -67,6 +76,11 @@ public class ProfessionalService {
         Establishment establishment = establishmentRepository.findById(establishmentId)
                 .orElseThrow(() -> new EntityNotFoundException("Establishment not found with id: " + establishmentId
         ));
+
+        User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!establishment.getOwner().getId().equals(authenticatedUser.getId())) {
+            throw new AccessDeniedException("You don't have permission to add a professional in this establishment");
+        }
 
         professional.getEstablishments().add(establishment);
         Professional saved = professionalRepository.save(professional);
