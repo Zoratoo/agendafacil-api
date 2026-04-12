@@ -42,7 +42,7 @@ public class ProfessionalService {
                 .specialty(createProfessionalDTO.getSpecialty())
                 .bio(createProfessionalDTO.getBio())
                 .document(createProfessionalDTO.getDocument())
-                .avatar_url(createProfessionalDTO.getAvatarUrl())
+                .avatarUrl(createProfessionalDTO.getAvatarUrl())
                 .build();
 
         Professional saved = professionalRepository.save(professional);
@@ -93,17 +93,17 @@ public class ProfessionalService {
                     establishmentSummaryDTO.getNeighborhood(),
                     establishmentSummaryDTO.getCity(),
                     establishmentSummaryDTO.getState(),
-                    establishmentSummaryDTO.getCreated_at(),
-                    establishmentSummaryDTO.getUpdated_at()
+                    establishmentSummaryDTO.getCreatedAt(),
+                    establishmentSummaryDTO.getUpdatedAt()
                 )
             ).toList(),
             professional.getSpecialty(),
             professional.getBio(),
             professional.getDocument(),
-            professional.getAvatar_url(),
+            professional.getAvatarUrl(),
             professional.getActive(),
-            professional.getCreated_at(),
-            professional.getUpdated_at()
+            professional.getCreatedAt(),
+            professional.getUpdatedAt()
         );
     }
 }

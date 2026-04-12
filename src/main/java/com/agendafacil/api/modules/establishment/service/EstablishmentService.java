@@ -44,8 +44,8 @@ public class EstablishmentService {
             saved.getCity(),
             saved.getState(),
             saved.getActive(),
-            saved.getCreated_at(),
-            saved.getUpdated_at()
+            saved.getCreatedAt(),
+            saved.getUpdatedAt()
         );
     }
 
@@ -65,8 +65,8 @@ public class EstablishmentService {
                         establishment.getCity(),
                         establishment.getState(),
                         establishment.getActive(),
-                        establishment.getCreated_at(),
-                        establishment.getUpdated_at()
+                        establishment.getCreatedAt(),
+                        establishment.getUpdatedAt()
                 )
         ).toList();
     }

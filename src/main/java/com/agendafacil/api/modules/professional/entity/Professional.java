@@ -48,15 +48,15 @@ public class Professional {
     private String document;
 
     @Column
-    private String avatar_url;
+    private String avatarUrl;
 
     @Builder.Default
     @Column(nullable = false)
     private Boolean active = true;
 
     @CreationTimestamp
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 }
