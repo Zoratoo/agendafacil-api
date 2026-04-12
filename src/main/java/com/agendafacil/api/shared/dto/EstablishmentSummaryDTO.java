@@ -1,4 +1,4 @@
-package com.agendafacil.api.modules.establishment.dto;
+package com.agendafacil.api.shared.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
-public class EstablishmentResponseDTO {
+public class EstablishmentSummaryDTO {
     private UUID id;
     private String name;
     private String category;
@@ -19,7 +19,6 @@ public class EstablishmentResponseDTO {
     private String neighborhood;
     private String city;
     private String state;
-    private Boolean active;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

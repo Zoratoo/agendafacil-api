@@ -1,5 +1,6 @@
 package com.agendafacil.api.modules.establishment.entity;
 
+import com.agendafacil.api.modules.professional.entity.Professional;
 import com.agendafacil.api.modules.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -26,6 +28,14 @@ public class Establishment {
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
+
+    @ManyToMany
+    @JoinTable(
+            name = "establishment_professionals",
+            joinColumns = @JoinColumn(name = "establishment_id"),
+            inverseJoinColumns = @JoinColumn(name = "professional_id")
+    )
+    private List<Professional> professionals;
 
     @Column(nullable = false, length = 100)
     private String name;

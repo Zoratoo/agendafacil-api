@@ -19,6 +19,7 @@ Sistema de agendamentos multi-tenant para clínicas, salões e quadras esportiva
 - Java 21
 
 ### Passos
+
 ```bash
 # Clone o repositório
 git clone https://github.com/Zoratoo/agendafacil-api
@@ -39,3 +40,16 @@ docker compose up -d postgres redis
 |--------|------|-----------|------|
 | POST | `/auth/register` | Cadastro de usuário | Público |
 | POST | `/auth/login` | Login e geração de token | Público |
+
+### Establishment
+| Método | Rota | Descrição | Auth |
+|--------|------|-----------|------|
+| POST | `/establishment` | Criar estabelecimento | OWNER |
+| GET | `/establishment` | Listar estabelecimentos do owner | OWNER, SUPER_ADMIN |
+
+### Professional
+| Método | Rota | Descrição | Auth |
+|--------|------|-----------|------|
+| POST | `/professionals` | Criar profissional | OWNER |
+| GET | `/professionals/establishment/{id}` | Listar profissionais do estabelecimento | OWNER |
+| POST | `/professionals/{id}/establishment/{id}` | Vincular profissional a estabelecimento | OWNER |
