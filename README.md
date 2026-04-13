@@ -33,6 +33,10 @@ docker compose up -d postgres redis
 ./mvnw spring-boot:run
 ```
 
+## Modelagem
+
+O sistema utiliza uma tabela `establishment_users` para gerenciar os papéis dos usuários dentro de cada estabelecimento. Um usuário pode ser `OWNER` em um estabelecimento e `PROFESSIONAL` em outro simultaneamente.
+
 ## Endpoints
 
 ### Auth
@@ -44,26 +48,19 @@ docker compose up -d postgres redis
 ### Establishment
 | Método | Rota | Descrição | Auth |
 |--------|------|-----------|------|
-| POST | `/establishment` | Criar estabelecimento | Autenticado |
-| GET | `/establishment` | Listar meus estabelecimentos | Autenticado |
-
-### Professional
-| Método | Rota | Descrição | Auth |
-|--------|------|-----------|------|
-| POST | `/professionals` | Vincular profissional ao estabelecimento | OWNER |
-| GET | `/professionals/establishment/{id}` | Listar profissionais do estabelecimento | Autenticado |
-| POST | `/professionals/{id}/establishment/{id}` | Adicionar profissional a outro estabelecimento | OWNER |
+| POST | `/establishments` | Criar estabelecimento | Autenticado |
+| GET | `/establishments` | Listar meus estabelecimentos | Autenticado |
 
 ### Services Offered
 | Método | Rota | Descrição | Auth |
 |--------|------|-----------|------|
-| POST | `/services-offered` | Criar serviço | OWNER |
+| POST | `/services-offered` | Criar serviço | OWNER do estabelecimento |
 | GET | `/services-offered/establishments/{id}` | Listar serviços do estabelecimento | Autenticado |
 
 ### Schedule
 | Método | Rota | Descrição | Auth |
 |--------|------|-----------|------|
-| POST | `/schedule/working-hours` | Definir horários de trabalho | PROFESSIONAL |
-| POST | `/schedule/blocked-slots` | Bloquear horário/dia | PROFESSIONAL |
-| GET | `/schedule/my/working-hours` | Ver minha agenda | PROFESSIONAL |
-| GET | `/schedule/professional/{id}/working-hours` | Ver agenda de um profissional | Autenticado |
+| POST | `/schedule/working-hours` | Definir horários de trabalho | PROFESSIONAL do estabelecimento |
+| POST | `/schedule/blocked-slots` | Bloquear horário/dia | PROFESSIONAL do estabelecimento |
+| GET | `/schedule/my/establishment/{id}/working-hours` | Ver minha agenda no estabelecimento | Autenticado |
+| GET | `/schedule/professional/{userId}/establishment/{id}/working-hours` | Ver agenda de um profissional | Autenticado |
