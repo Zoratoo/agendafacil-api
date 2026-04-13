@@ -1,6 +1,5 @@
-package com.agendafacil.api.modules.schedule.entity;
+package com.agendafacil.api.modules.establishment.entity;
 
-import com.agendafacil.api.modules.establishment.entity.Establishment;
 import com.agendafacil.api.modules.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,18 +8,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "blocked_slots")
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Table(
+    name = "establishment_users",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"establishment_id", "user_id"})
+)
 @Data
-public class BlockedSlot {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class EstablishmentUser {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -33,17 +33,9 @@ public class BlockedSlot {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private LocalDate blockedDate;
-
-    @Column
-    private LocalTime startTime;
-
-    @Column
-    private LocalTime endTime;
-
-    @Column(length = 255)
-    private String reason;
+    private EstablishmentRole role;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

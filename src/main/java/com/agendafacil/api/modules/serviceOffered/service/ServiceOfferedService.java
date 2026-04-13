@@ -1,7 +1,10 @@
 package com.agendafacil.api.modules.serviceOffered.service;
 
 import com.agendafacil.api.modules.establishment.entity.Establishment;
+import com.agendafacil.api.modules.establishment.entity.EstablishmentRole;
+import com.agendafacil.api.modules.establishment.entity.EstablishmentUser;
 import com.agendafacil.api.modules.establishment.repository.EstablishmentRepository;
+import com.agendafacil.api.modules.establishment.repository.EstablishmentUserRepository;
 import com.agendafacil.api.modules.serviceOffered.dto.CreateServiceOfferedDTO;
 import com.agendafacil.api.modules.serviceOffered.dto.ServiceOfferedResponseDTO;
 import com.agendafacil.api.modules.serviceOffered.entity.ServiceOffered;
@@ -22,6 +25,7 @@ import java.util.UUID;
 public class ServiceOfferedService {
     private final ServiceOfferedRepository serviceOfferedRepository;
     private final EstablishmentRepository establishmentRepository;
+    private final EstablishmentUserRepository establishmentUserRepository;
 
     public ServiceOfferedResponseDTO create(CreateServiceOfferedDTO createServiceOfferedDTO) {
         Establishment establishment = establishmentRepository.findById(createServiceOfferedDTO.getEstablishmentId())
@@ -29,11 +33,15 @@ public class ServiceOfferedService {
         ));
 
         User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!establishment.getOwner().getId().equals(authenticatedUser.getId())) {
-            throw new AccessDeniedException("You don't have permission to create a service for this establishment");
+        EstablishmentUser establishmentUser = establishmentUserRepository
+            .findByUserAndEstablishment(authenticatedUser, establishment)
+            .orElseThrow(() -> new AccessDeniedException("You are not a member of this establishment"));
+
+        if (establishmentUser.getRole() != EstablishmentRole.OWNER) {
+            throw new AccessDeniedException("Only owners can create services for this establishment");
         }
 
-        ServiceOffered serviceOffered = serviceOfferedRepository.save(
+        ServiceOffered saved = serviceOfferedRepository.save(
             ServiceOffered.builder()
                 .establishment(establishment)
                 .name(createServiceOfferedDTO.getName())
@@ -43,7 +51,6 @@ public class ServiceOfferedService {
                 .build()
         );
 
-        ServiceOffered saved = serviceOfferedRepository.save(serviceOffered);
         return toResponseDTO(saved);
     }
 

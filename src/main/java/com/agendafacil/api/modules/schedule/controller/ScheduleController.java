@@ -20,26 +20,26 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @PostMapping("/working-hours")
-    @PreAuthorize("hasAuthority('PROFESSIONAL')")
+    @PreAuthorize("isAuthenticated()")
     public WorkingHoursResponseDTO createWorkingHours(@RequestBody CreateWorkingHoursDTO createWorkingHoursDTO) {
         return scheduleService.addWorkingHours(createWorkingHoursDTO);
     }
 
     @PostMapping("/blocked-slots")
-    @PreAuthorize("hasAuthority('PROFESSIONAL')")
+    @PreAuthorize("isAuthenticated()")
     public BlockedSlotResponseDTO createBlockedSlot(@RequestBody CreateBlockedSlotDTO createBlockedSlotDTO) {
         return scheduleService.addBlockedSlot(createBlockedSlotDTO);
     }
 
-    @GetMapping("/my/working-hours")
-    @PreAuthorize("hasAuthority('PROFESSIONAL')")
-    public List<WorkingHoursResponseDTO> findMyWorkingHours() {
-        return scheduleService.findMyWorkingHours();
+    @GetMapping("/my/establishment/{establishmentId}/working-hours")
+    @PreAuthorize("isAuthenticated()")
+    public List<WorkingHoursResponseDTO> findMyWorkingHours(@PathVariable UUID establishmentId) {
+        return scheduleService.findMyEstablishmentWorkingHours(establishmentId);
     }
 
-    @GetMapping("/professional/{professionalId}/working-hours")
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'OWNER', 'PROFESSIONAL', 'CLIENT')")
-    public List<WorkingHoursResponseDTO> findWorkingHoursByProfessional(@PathVariable UUID professionalId) {
-        return scheduleService.findWorkingHoursByProfessional(professionalId);
+    @GetMapping("/professional/{professionalId}/establishment/{establishmentId}/working-hours")
+    @PreAuthorize("isAuthenticated()")
+    public List<WorkingHoursResponseDTO> findWorkingHoursByProfessional(@PathVariable UUID professionalId, @PathVariable UUID establishmentId) {
+        return scheduleService.findWorkingHoursByProfessionalAndEstablishment(professionalId, establishmentId);
     }
 }

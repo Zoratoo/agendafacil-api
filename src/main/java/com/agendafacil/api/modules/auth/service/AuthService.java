@@ -28,25 +28,25 @@ public class AuthService {
 
     public AuthResponseDTO register(RegisterRequestDTO registerRequestDTO) {
         User user = User.builder()
-                .name(registerRequestDTO.getName())
-                .email(registerRequestDTO.getEmail())
-                .password(passwordEncoder.encode(registerRequestDTO.getPassword()))
-                .role(Role.CLIENT)
-                .build();
+            .name(registerRequestDTO.getName())
+            .email(registerRequestDTO.getEmail())
+            .password(passwordEncoder.encode(registerRequestDTO.getPassword()))
+            .role(Role.USER)
+            .build();
         userRepository.save(user);
-        return new AuthResponseDTO(jwtService.generateToken(user), Role.CLIENT.toString());
+        return new AuthResponseDTO(jwtService.generateToken(user), Role.USER.toString());
     }
 
     public AuthResponseDTO login(LoginRequestDTO loginRequestDTO) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequestDTO.getEmail(),
-                        loginRequestDTO.getPassword()
-                )
-        );
+        new UsernamePasswordAuthenticationToken(
+            loginRequestDTO.getEmail(),
+            loginRequestDTO.getPassword()
+        ));
+
         Optional<User> optionalUser = userRepository.findByEmail(loginRequestDTO.getEmail());
         User user = optionalUser
-                .orElseThrow(() -> new UsernameNotFoundException("Username " + loginRequestDTO.getEmail() + " not found"));
+            .orElseThrow(() -> new UsernameNotFoundException("Username " + loginRequestDTO.getEmail() + " not found"));
         return new AuthResponseDTO(jwtService.generateToken(user), user.getRole().toString());
     }
 }

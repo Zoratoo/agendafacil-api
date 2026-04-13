@@ -17,14 +17,14 @@ public class EstablishmentController {
     private final EstablishmentService establishmentService;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('OWNER')")
+    @PreAuthorize("isAuthenticated()")
     public EstablishmentResponseDTO create(@RequestBody @Valid CreateEstablishmentDTO createEstablishmentDTO) {
         return establishmentService.create(createEstablishmentDTO);
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('OWNER', 'SUPER_ADMIN')")
-    public List<EstablishmentResponseDTO> findByOwner() {
-        return establishmentService.findByOwner();
+    @PreAuthorize("isAuthenticated()")
+    public List<EstablishmentResponseDTO> findMyEstablishments() {
+        return establishmentService.findMyEstablishments();
     }
 }

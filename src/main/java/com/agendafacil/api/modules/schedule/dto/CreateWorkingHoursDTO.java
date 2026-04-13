@@ -10,6 +10,8 @@ import java.util.UUID;
 @Data
 public class CreateWorkingHoursDTO {
     @NotBlank
+    private UUID establishmentId;
+    @NotBlank
     private DayOfWeek dayOfWeek;
     @NotBlank
     private LocalTime startTime;

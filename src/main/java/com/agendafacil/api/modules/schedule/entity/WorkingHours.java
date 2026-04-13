@@ -1,6 +1,7 @@
 package com.agendafacil.api.modules.schedule.entity;
 
-import com.agendafacil.api.modules.professional.entity.Professional;
+import com.agendafacil.api.modules.establishment.entity.Establishment;
+import com.agendafacil.api.modules.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,8 +27,12 @@ public class WorkingHours {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "professional_id", nullable = false)
-    private Professional professional;
+    @JoinColumn(name = "establishment_id", nullable = false)
+    private Establishment establishment;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 15)
@@ -44,5 +49,4 @@ public class WorkingHours {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-
 }
