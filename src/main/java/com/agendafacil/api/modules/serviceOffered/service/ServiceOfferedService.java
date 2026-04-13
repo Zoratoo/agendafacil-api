@@ -56,7 +56,7 @@ public class ServiceOfferedService {
         return servicesOffered.stream().map(this::toResponseDTO).toList();
     }
 
-    public ServiceOfferedResponseDTO toResponseDTO(ServiceOffered serviceOffered) {
+    private ServiceOfferedResponseDTO toResponseDTO(ServiceOffered serviceOffered) {
         return new ServiceOfferedResponseDTO(
             serviceOffered.getId(),
             new EstablishmentSummaryDTO(

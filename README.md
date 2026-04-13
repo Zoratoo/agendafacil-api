@@ -44,18 +44,26 @@ docker compose up -d postgres redis
 ### Establishment
 | Método | Rota | Descrição | Auth |
 |--------|------|-----------|------|
-| POST | `/establishment` | Criar estabelecimento | OWNER |
-| GET | `/establishment` | Listar estabelecimentos do owner | OWNER, SUPER_ADMIN |
+| POST | `/establishment` | Criar estabelecimento | Autenticado |
+| GET | `/establishment` | Listar meus estabelecimentos | Autenticado |
 
 ### Professional
 | Método | Rota | Descrição | Auth |
 |--------|------|-----------|------|
-| POST | `/professionals` | Criar profissional | OWNER |
-| GET | `/professionals/establishment/{id}` | Listar profissionais do estabelecimento | OWNER |
-| POST | `/professionals/{id}/establishment/{id}` | Vincular profissional a estabelecimento | OWNER |
+| POST | `/professionals` | Vincular profissional ao estabelecimento | OWNER |
+| GET | `/professionals/establishment/{id}` | Listar profissionais do estabelecimento | Autenticado |
+| POST | `/professionals/{id}/establishment/{id}` | Adicionar profissional a outro estabelecimento | OWNER |
 
 ### Services Offered
 | Método | Rota | Descrição | Auth |
 |--------|------|-----------|------|
 | POST | `/services-offered` | Criar serviço | OWNER |
-| GET | `/services-offered/establishments/{id}` | Listar serviços do estabelecimento | Todos |
+| GET | `/services-offered/establishments/{id}` | Listar serviços do estabelecimento | Autenticado |
+
+### Schedule
+| Método | Rota | Descrição | Auth |
+|--------|------|-----------|------|
+| POST | `/schedule/working-hours` | Definir horários de trabalho | PROFESSIONAL |
+| POST | `/schedule/blocked-slots` | Bloquear horário/dia | PROFESSIONAL |
+| GET | `/schedule/my/working-hours` | Ver minha agenda | PROFESSIONAL |
+| GET | `/schedule/professional/{id}/working-hours` | Ver agenda de um profissional | Autenticado |
