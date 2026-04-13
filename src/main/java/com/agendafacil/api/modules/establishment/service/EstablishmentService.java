@@ -3,7 +3,10 @@ package com.agendafacil.api.modules.establishment.service;
 import com.agendafacil.api.modules.establishment.dto.CreateEstablishmentDTO;
 import com.agendafacil.api.modules.establishment.dto.EstablishmentResponseDTO;
 import com.agendafacil.api.modules.establishment.entity.Establishment;
+import com.agendafacil.api.modules.establishment.entity.EstablishmentRole;
+import com.agendafacil.api.modules.establishment.entity.EstablishmentUser;
 import com.agendafacil.api.modules.establishment.repository.EstablishmentRepository;
+import com.agendafacil.api.modules.establishment.repository.EstablishmentUserRepository;
 import com.agendafacil.api.modules.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,11 +18,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EstablishmentService {
     private final EstablishmentRepository establishmentRepository;
+    private final EstablishmentUserRepository establishmentUserRepository;
 
     public EstablishmentResponseDTO create(CreateEstablishmentDTO createEstablishmentDTO) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User userAuthenticated = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Establishment establishment = Establishment.builder()
-            .owner(user)
             .name(createEstablishmentDTO.getName())
             .category(createEstablishmentDTO.getCategory())
             .phone(createEstablishmentDTO.getPhone())
@@ -32,43 +35,41 @@ public class EstablishmentService {
             .build();
 
         Establishment saved = establishmentRepository.save(establishment);
+
+        establishmentUserRepository.save(
+            EstablishmentUser.builder()
+            .role(EstablishmentRole.OWNER)
+            .user(userAuthenticated)
+            .establishment(saved)
+            .build()
+        );
+        return toResponseDTO(saved);
+    }
+
+    public List<EstablishmentResponseDTO> findMyEstablishments() {
+        User userAuthenticated = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<EstablishmentUser> establishmentUsers = establishmentUserRepository.findByUser(userAuthenticated);
+
+        return establishmentUsers.stream()
+                .map(eu -> toResponseDTO(eu.getEstablishment()))
+                .toList();
+    }
+
+    private EstablishmentResponseDTO toResponseDTO(Establishment establishment) {
         return new EstablishmentResponseDTO(
-            saved.getId(),
-            saved.getName(),
-            saved.getCategory(),
-            saved.getPhone(),
-            saved.getCep(),
-            saved.getAddress(),
-            saved.getNumber(),
-            saved.getNeighborhood(),
-            saved.getCity(),
-            saved.getState(),
-            saved.getActive(),
-            saved.getCreatedAt(),
-            saved.getUpdatedAt()
+            establishment.getId(),
+            establishment.getName(),
+            establishment.getCategory(),
+            establishment.getPhone(),
+            establishment.getCep(),
+            establishment.getAddress(),
+            establishment.getNumber(),
+            establishment.getNeighborhood(),
+            establishment.getCity(),
+            establishment.getState(),
+            establishment.getActive(),
+            establishment.getCreatedAt(),
+            establishment.getUpdatedAt()
         );
     }
-
-    public List<EstablishmentResponseDTO> findByOwner() {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<Establishment> establishments = establishmentRepository.findByOwner(user);
-        return establishments.stream().map(
-            establishment -> new EstablishmentResponseDTO(
-                establishment.getId(),
-                establishment.getName(),
-                establishment.getCategory(),
-                establishment.getPhone(),
-                establishment.getCep(),
-                establishment.getAddress(),
-                establishment.getNumber(),
-                establishment.getNeighborhood(),
-                establishment.getCity(),
-                establishment.getState(),
-                establishment.getActive(),
-                establishment.getCreatedAt(),
-                establishment.getUpdatedAt()
-            )
-        ).toList();
-    }
-
 }

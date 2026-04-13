@@ -17,13 +17,13 @@ public class ServiceOfferedController {
     private final ServiceOfferedService serviceOfferedService;
     
     @PostMapping
-    @PreAuthorize("hasAuthority('OWNER')")
+    @PreAuthorize("isAuthenticated()")
     public ServiceOfferedResponseDTO create(@RequestBody CreateServiceOfferedDTO createServiceOfferedDTO) {
         return serviceOfferedService.create(createServiceOfferedDTO);
     }
 
     @GetMapping("establishments/{establishmentId}")
-    @PreAuthorize("hasAnyAuthority('SUPER_ADMIN', 'OWNER', 'PROFESSIONAL', 'CLIENT')")
+    @PreAuthorize("isAuthenticated()")
     public List<ServiceOfferedResponseDTO> findByEstablishment(@PathVariable UUID establishmentId) {
         return serviceOfferedService.findByEstablishment(establishmentId);
     }

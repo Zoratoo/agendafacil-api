@@ -1,7 +1,7 @@
 package com.agendafacil.api.modules.schedule.dto;
 
-import com.agendafacil.api.modules.professional.dto.ProfessionalResponseDTO;
-import com.agendafacil.api.modules.professional.entity.Professional;
+import com.agendafacil.api.shared.dto.EstablishmentSummaryDTO;
+import com.agendafacil.api.shared.dto.UserSummaryDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -14,7 +14,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class WorkingHoursResponseDTO {
     private UUID id;
-    private ProfessionalResponseDTO professional;
+    private UserSummaryDTO user;
+    private EstablishmentSummaryDTO establishmentSummaryDTO;
     private DayOfWeek dayOfWeek;
     private LocalTime startTime;
     private LocalTime endTime;
