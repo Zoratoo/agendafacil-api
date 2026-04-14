@@ -1,18 +1,19 @@
 package com.agendafacil.api.modules.serviceOffered.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.UUID;
 
 @Data
 public class CreateServiceOfferedDTO {
-    @NotBlank
+    @NotNull
     private UUID establishmentId;
     @NotBlank
     private String name;
     private String description;
-    @NotBlank
+    @NotNull
     private int durationMinutes;
     private double price;
 }

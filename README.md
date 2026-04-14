@@ -37,6 +37,8 @@ docker compose up -d postgres redis
 
 O sistema utiliza uma tabela `establishment_users` para gerenciar os papéis dos usuários dentro de cada estabelecimento. Um usuário pode ser `OWNER` em um estabelecimento e `PROFESSIONAL` em outro simultaneamente.
 
+O fluxo de vínculo é feito por convites — um `OWNER` convida um usuário por email, e o convidado aceita ou rejeita a solicitação.
+
 ## Endpoints
 
 ### Auth
@@ -50,6 +52,14 @@ O sistema utiliza uma tabela `establishment_users` para gerenciar os papéis dos
 |--------|------|-----------|------|
 | POST | `/establishments` | Criar estabelecimento | Autenticado |
 | GET | `/establishments` | Listar meus estabelecimentos | Autenticado |
+
+### Invitations
+| Método | Rota | Descrição | Auth |
+|--------|------|-----------|------|
+| POST | `/invitations` | Convidar usuário para o estabelecimento | OWNER do estabelecimento |
+| GET | `/invitations/my` | Ver meus convites pendentes | Autenticado |
+| PATCH | `/invitations/{id}/accept` | Aceitar convite | Autenticado |
+| PATCH | `/invitations/{id}/reject` | Rejeitar convite | Autenticado |
 
 ### Services Offered
 | Método | Rota | Descrição | Auth |

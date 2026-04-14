@@ -8,6 +8,7 @@ import com.agendafacil.api.modules.establishment.entity.EstablishmentUser;
 import com.agendafacil.api.modules.establishment.repository.EstablishmentRepository;
 import com.agendafacil.api.modules.establishment.repository.EstablishmentUserRepository;
 import com.agendafacil.api.modules.user.entity.User;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class EstablishmentService {
     private final EstablishmentRepository establishmentRepository;
     private final EstablishmentUserRepository establishmentUserRepository;
 
+    @Transactional
     public EstablishmentResponseDTO create(CreateEstablishmentDTO createEstablishmentDTO) {
         User userAuthenticated = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Establishment establishment = Establishment.builder()
