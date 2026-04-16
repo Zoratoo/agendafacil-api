@@ -39,6 +39,8 @@ O sistema utiliza uma tabela `establishment_users` para gerenciar os papéis dos
 
 O fluxo de vínculo é feito por convites — um `OWNER` convida um usuário por email, e o convidado aceita ou rejeita a solicitação.
 
+O algoritmo de disponibilidade cruza `WorkingHours`, `BlockedSlots` e `Bookings` existentes para calcular os horários livres de um profissional em uma data específica.
+
 ## Endpoints
 
 ### Auth
@@ -74,3 +76,10 @@ O fluxo de vínculo é feito por convites — um `OWNER` convida um usuário por
 | POST | `/schedule/blocked-slots` | Bloquear horário/dia | PROFESSIONAL do estabelecimento |
 | GET | `/schedule/my/establishment/{id}/working-hours` | Ver minha agenda no estabelecimento | Autenticado |
 | GET | `/schedule/professional/{userId}/establishment/{id}/working-hours` | Ver agenda de um profissional | Autenticado |
+
+### Bookings
+| Método | Rota | Descrição | Auth |
+|--------|------|-----------|------|
+| GET | `/bookings/available-slots` | Listar slots disponíveis de um profissional | Autenticado |
+| POST | `/bookings` | Criar agendamento | Autenticado |
+| PATCH | `/bookings/{id}/cancel` | Cancelar agendamento | Autenticado |
