@@ -41,6 +41,18 @@ O fluxo de vínculo é feito por convites — um `OWNER` convida um usuário por
 
 O algoritmo de disponibilidade cruza `WorkingHours`, `BlockedSlots` e `Bookings` existentes para calcular os horários livres de um profissional em uma data específica.
 
+## Tratamento de Erros
+
+Todas as exceções são tratadas globalmente e retornam um JSON padronizado:
+
+```json
+{
+    "status": 404,
+    "message": "Establishment not found with id: ...",
+    "timestamp": "2026-04-15T23:00:00"
+}
+```
+
 ## Endpoints
 
 ### Auth
