@@ -228,9 +228,6 @@ public class BookingService {
     }
 
     private boolean hasTimeOverlap(LocalTime slotStart, LocalTime slotEnd, LocalTime existingStart, LocalTime existingEnd) {
-        return
-            (slotStart.isAfter(existingStart) && slotStart.isBefore(existingEnd))
-                || (slotEnd.isAfter(existingStart) && slotEnd.isBefore(existingEnd))
-                    || (slotStart.isBefore(existingStart) && slotEnd.isAfter(existingEnd));
+        return slotStart.isBefore(existingEnd) && slotEnd.isAfter(existingStart);
     }
 }
