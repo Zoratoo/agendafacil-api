@@ -2,6 +2,10 @@
 
 Sistema de agendamentos multi-tenant para clínicas, salões e quadras esportivas.
 
+🚀 **API em produção:** [agendafacil-api-wb81.onrender.com](https://agendafacil-api-wb81.onrender.com)
+
+📄 **Documentação interativa:** [Swagger UI](https://agendafacil-api-wb81.onrender.com/swagger-ui/index.html)
+
 ## Tecnologias
 
 - Java 21
@@ -39,7 +43,7 @@ O sistema utiliza uma tabela `establishment_users` para gerenciar os papéis dos
 
 O fluxo de vínculo é feito por convites — um `OWNER` convida um usuário por email, e o convidado aceita ou rejeita a solicitação.
 
-O algoritmo de disponibilidade cruza `WorkingHours`, `BlockedSlots` e `Bookings` existentes para calcular os horários livres de um profissional em uma data específica.
+O algoritmo de disponibilidade cruza `WorkingHours`, `BlockedSlots` e `Bookings` existentes para calcular os horários livres de um profissional em uma data específica, com validação de conflitos de horário para profissionais e clientes.
 
 ## Tratamento de Erros
 
@@ -52,6 +56,14 @@ Todas as exceções são tratadas globalmente e retornam um JSON padronizado:
     "timestamp": "2026-04-15T23:00:00"
 }
 ```
+
+## Testes
+
+Testes unitários implementados com JUnit 5 e Mockito cobrindo os principais cenários do `BookingService`:
+
+- Retorno de lista vazia quando profissional não tem horários cadastrados
+- Lançamento de exceção quando cliente já tem agendamento no mesmo horário
+- Retorno correto de slots disponíveis quando profissional tem horários cadastrados
 
 ## Endpoints
 
