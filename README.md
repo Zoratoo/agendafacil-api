@@ -78,6 +78,7 @@ Testes unitários implementados com JUnit 5 e Mockito cobrindo os principais cen
 |--------|------|-----------|------|
 | POST | `/establishments` | Criar estabelecimento | Autenticado |
 | GET | `/establishments` | Listar meus estabelecimentos | Autenticado |
+| GET | `/establishments/{id}/professionals` | Listar profissionais do estabelecimento | Autenticado |
 
 ### Invitations
 | Método | Rota | Descrição | Auth |

@@ -8,12 +8,16 @@ import com.agendafacil.api.modules.establishment.entity.EstablishmentUser;
 import com.agendafacil.api.modules.establishment.repository.EstablishmentRepository;
 import com.agendafacil.api.modules.establishment.repository.EstablishmentUserRepository;
 import com.agendafacil.api.modules.user.entity.User;
+import com.agendafacil.api.shared.dto.UserSummaryDTO;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -53,8 +57,22 @@ public class EstablishmentService {
         List<EstablishmentUser> establishmentUsers = establishmentUserRepository.findByUser(userAuthenticated);
 
         return establishmentUsers.stream()
-                .map(eu -> toResponseDTO(eu.getEstablishment()))
-                .toList();
+            .map(eu -> toResponseDTO(eu.getEstablishment()))
+            .toList();
+    }
+
+    public List<UserSummaryDTO> findProfessionalsByEstablishment(UUID establishmentId) {
+        Establishment establishment = establishmentRepository.findById(establishmentId)
+            .orElseThrow(() -> new EntityNotFoundException("Establishment not found with id: " + establishmentId));
+
+        List<EstablishmentUser> establishmentUsers = establishmentUserRepository.findByEstablishmentAndRole(establishment, EstablishmentRole.PROFESSIONAL);
+
+        return establishmentUsers.stream().map(establishmentUser ->
+            new UserSummaryDTO(
+                establishmentUser.getUser().getId(),
+                establishmentUser.getUser().getName(),
+                establishmentUser.getUser().getEmail()
+            )).toList();
     }
 
     private EstablishmentResponseDTO toResponseDTO(Establishment establishment) {
